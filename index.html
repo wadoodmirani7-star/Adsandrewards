@@ -3,30 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ads and Rewards Platform</title>
+    <title>Ads and Rewards App</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background-color: #f4f6f8; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { background: #fff; width: 100%; max-width: 450px; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
-        h1 { color: #007bff; margin-bottom: 20px; }
-        p { margin-bottom: 15px; color: #666; }
-        .btn { display: inline-block; width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; transition: background 0.3s; margin-top: 10px; text-decoration: none; text-align: center; }
-        .btn:hover { background-color: #0056b3; }
-        .info-box { background: #e9ecef; padding: 15px; border-radius: 8px; margin-top: 20px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding-bottom: 60px; /* Space for bottom nav */
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-height: 100vh;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .page { display: none; }
+        .active-page { display: block; }
+        
+        /* Login Page */
+        .login-card { text-align: center; margin-top: 100px; }
+        .login-input { padding: 12px; width: 80%; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 6px; }
+
+        /* Home Page */
+        .header { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 15px; }
+        .ribbon { background-color: #007bff; color: white; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .box { background-color: #e9ecef; padding: 20px; border-radius: 8px; text-align: center; cursor: pointer; transition: background-color 0.2s; }
+        .box:hover { background-color: #d1d5db; }
+
+        /* Profile Page */
+        .profile-header { text-align: center; margin-bottom: 20px; }
+        .avatar { width: 80px; height: 80px; background-color: #007bff; color: white; font-size: 36px; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 10px; }
+        
+        /* Withdraw Page */
+        .section-title { font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #333; }
+        .amount-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .amount-btn { background-color: #007bff; color: white; padding: 12px; border-radius: 6px; text-align: center; cursor: pointer; }
+        .input-group { margin-bottom: 15px; }
+        .input-group select, .input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .btn-withdraw { display: block; width: 100%; padding: 14px; background-color: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 400px; background-color: #fff; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .nav-item { cursor: pointer; color: #666; font-size: 14px; }
+        .nav-item.active { color: #007bff; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Ads and Rewards</h1>
-    <p>Rozana 10 ishteharat dekhein aur 3 din mein 100 rupay kamayein!</p>
-    
-    <a href="#" class="btn" onclick="alert('Login feature will be added soon!')">Google ya number se login karein</a>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="page-login" class="page active-page">
+            <div class="login-card">
+                <h2>Login</h2>
+                <input id="user-name" class="login-input" type="text" placeholder="Enter your name"><br>
+                <button class="btn-withdraw" style="width: 80%; padding: 12px;" onclick="proceedToHome()">Login</button>
+            </div>
+        </div>
 
-    <div class="info-box">
-        <p><strong>Referral System:</strong> 5 doston ko mad'oo karein aur fi referral 25 rupay hasil karein!</p>
+        <!-- Home Page -->
+        <div id="page-home" class="page">
+            <div class="header">Welcome, <span id="display-name">Abdul Wadood</span></div>
+            <div class="ribbon" onclick="showPage('page-withdraw')">Balance: $0.00</div>
+            <div class="grid">
+                <div class="box" onclick="alert('View Tasks functionality goes here')">View Task</div>
+                <div class="box" onclick="alert('Referral functionality goes here')">Referral</div>
+                <div class="box" onclick="showPage('page-withdraw')">Withdraw</div>
+                <div class="box" onclick="alert('History functionality goes here')">History</div>
+            </div>
+        </div>
+
+        <!-- Withdraw Page -->
+        <div id="page-withdraw" class="page">
+            <div class="header" style="text-align: center;">Withdraw Funds</div>
+            <div class="section-title">Select Amount (RS)</div>
+            <div class="amount-grid">
+                <div class="amount-btn">100</div>
+                <div class="amount-btn">500</div>
+                <div class="amount-btn">1000</div>
+                <div class="amount-btn">3000</div>
+                <div class="amount-btn">5000</div>
+            </div>
+            <div class="section-title">Payment Details</div>
+            <div class="input-group">
+                <label>Select Payment Method</label>
+                <select>
+                    <option>EasyPaisa</option>
+                    <option>JazzCash</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Account Number</label>
+                <input type="text" placeholder="Enter number">
+            </div>
+            <button class="btn-withdraw">Withdraw</button>
+        </div>
+
+        <!-- Profile Page ('Me') -->
+        <div id="page-me" class="page">
+            <div class="profile-header">
+                <div class="avatar" id="avatar-initial">A</div>
+                <div style="font-size: 18px; font-weight: bold;" id="profile-name">Abdul Wadood</div>
+            </div>
+            <div class="section-title">Account Settings</div>
+            <button class="btn-withdraw" style="background-color: #6c757d; margin-bottom: 10px;">Change Name</button><br>
+            <button class="btn-withdraw" style="background-color: #6c757d; margin-bottom: 10px;">Change Password</button><br>
+            <button class="btn-withdraw" style="background-color: #6c757d;">Verify Gmail</button>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav" id="bottom-nav" style="display: none;">
+            <div class="nav-item active" id="nav-home" onclick="showPage('page-home')">Home</div>
+            <div class="nav-item" id="nav-me" onclick="showPage('page-me')">Me</div>
+        </div>
     </div>
-</div>
+
+    <script>
+        function proceedToHome() {
+            var name = document.getElementById('user-name').value;
+            if(name.trim() === "") {
+                alert("Please enter your name");
+                return;
+            }
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('profile-name').innerText = name;
+            document.getElementById('avatar-initial').innerText = name.charAt(0).toUpperCase();
+            
+            showPage('page-home');
+            document.getElementById('bottom-nav').style.display = 'flex';
+        }
+
+        function showPage(pageId) {
+            var pages = document.getElementsByClassName('page');
+            for(var i = 0; i < pages.length; i++) {
+                pages[i].classList.remove('active-page');
+            }
+            document.getElementById(pageId).classList.add('active-page');
+
+            var navItems = document.getElementsByClassName('nav-item');
+            for(var i = 0; i < navItems.length; i++) {
+                navItems[i].classList.remove('active');
+            }
+            if(pageId === 'page-home') {
+                document.getElementById('nav-home').classList.add('active');
+            } else if(pageId === 'page-me') {
+                document.getElementById('nav-me').classList.add('active');
+            }
+        }
+    </script>
 
 </body>
-</html>
+    </html>
+    
